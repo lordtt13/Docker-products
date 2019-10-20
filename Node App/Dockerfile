@@ -5,10 +5,13 @@ FROM node:alpine
 WORKDIR /usr/app
 
 # Get Local Files to Container FS
-COPY ./ ./
+COPY ./package.json ./
 
 # Download Dependencies
 RUN npm install
+
+# Minimizing Rebuilding and Cache Costs
+COPY ./ ./
 
 # Default Command
 CMD ["npm","start"]
