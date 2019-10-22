@@ -1,0 +1,21 @@
+{
+  "name": "rediscounter",
+  "version": "1.0.0",
+  "description": "redis node.js counter, multidocker container application",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "redis",
+    "node",
+    "docker"
+  ],
+  "author": "Daniel Escobar",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "redis": "^2.8.0"
+  }
+}
