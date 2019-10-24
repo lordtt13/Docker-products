@@ -1,0 +1,18 @@
+# Named .dev to underscore that this Dockerfile is only used to run the application locally
+
+FROM node:alpine
+
+WORKDIR '/usr/section6/ui'
+
+## copes the package.json file to working directory, split to ensure npm install and source file is separate
+COPY package.json .
+
+## this allows us to never need the `node_modules` folder locally, since all dependencies are installed within the docker kernel
+RUN npm install
+
+## split into a second command, to avoid installing + copying all files over at once
+### Copy is unnecessary here, since we are using volumes for the dev docker setup, leaving for production
+COPY . . 
+
+## each of these represents a command, each comma represents a space
+CMD ["npm", "run", "start"]
