@@ -1,0 +1,31 @@
+version: '3'
+services:
+  web:
+    build:
+      ## specifies where the source files are for the service, in this case this directory
+      context: .
+      ## specifies which dockerfile to use to create the service
+      dockerfile: Dockerfile.dev
+    ports: 
+      - "3000:3000"
+    ## specifies volumes, and what folders to grab / ignore
+    volumes:
+      ### not specifing a folder:containerFolder argument, explicitly refers to working directory of docker folder
+      ### this folder is ignored and not synced via the user of docker volumes
+      - /usr/section6/ui/node_modules
+      ### this creates a volume reference for the local parent directory
+      ### this means any time the local directory is updated, the running docker container is updated with these files too
+      - .:/usr
+  ## service built created specifically just for npm tests
+  ### worth considering for dev environments only
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ## this is actually not working as intended, known bug with create-react-app and docker
+    ## tests are not being watched / re-ran when test files change, might want to revisit this later
+    volumes:
+      - /usr/section6/ui/node_modules
+      - .:/usr
+    command: ["npm", "run", "test"]
+    
