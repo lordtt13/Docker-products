@@ -1,0 +1,33 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t stantronic/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run stantronic/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t stantronic/multi-docker-client ./client
+  - docker build -t stantronic/multi-docker-nginx ./nginx
+  - docker build -t stantronic/multi-docker-server ./server
+  - docker build -t stantronic/multi-docker-worker ./worker
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push stantronic/multi-docker-client 
+  - docker push stantronic/multi-docker-nginx
+  - docker push stantronic/multi-docker-server
+  - docker push stantronic/multi-docker-worker
+
+deploy:
+  provider: elasticbeanstalk
+  region: eu-west-1
+  app: multi-docker
+  env: MultiDocker-env
+  bucket_name: elasticbeanstalk-eu-west-1-401237173725
+  bucket_path: docker-multi
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: 
+    secure: $AWS_SECRET_KEY
