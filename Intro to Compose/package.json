@@ -16,6 +16,6 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.4",
-    "redis": "^2.8.0"
+    "redis": "^3.1.1"
   }
 }
