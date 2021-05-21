@@ -12,4 +12,4 @@ ipython==7.8.0
 Pillow==8.1.1
 protobuf==3.10.0
 rospkg==1.1.10
-tensorflow==2.4.0
+tensorflow==2.5.0
